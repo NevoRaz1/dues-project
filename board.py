@@ -1,22 +1,13 @@
 import random
 import consts
 from consts import BOARD_ROWS,BOARD_COLUMNS,GROUND,MINE
-matrix=[]
+board=[]
 for row in range(0, 25):
-    matrix.append([])
+    board.append([])
     for column in range(0, 50):
-        matrix[row].append(GROUND)
-def put_grass_in_board(matrix):#
-    grasses=[]
-    for i in range(20):
-        row = random.randint(0, 24)
-        col = random.randint(0, 49)
-        while (row,col) in grasses:
-            row = random.randint(0, 24)
-            col = random.randint(0, 49)
-        grasses.append((row,col))
+        board[row].append(GROUND)
 
-def put_mines_in_board(matrix):
+def put_mines_in_board(board):
     mines=[]
     for i in range(20):#run 20 times for 20 mines
         row=random.randint(0,BOARD_ROWS-3)#roll random number between 0-len-3 because the mine length is 3
@@ -29,8 +20,8 @@ def put_mines_in_board(matrix):
 
     for mine in mines:#פה שמים את הפצצות בלוח
         for mine_first_square in mine:
-            matrix[mine_first_square[0]][mine_first_square[1]]=MINE
-put_mines_in_board(matrix)
-for i in matrix:
+            board[mine_first_square[0]][mine_first_square[1]]=MINE
+put_mines_in_board(board)
+for i in board:
     print(i)
 
