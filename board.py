@@ -16,6 +16,12 @@ def put_flag(board):
     for row in range(22,BOARD_ROWS):
         for column in range(46,BOARD_COLUMNS):
             board[row][column]=FLAG
+def is_mine_exist(mines,row,col):
+    for mine in range(len(mines)):
+        if mines[mine][0]==(row,col) or (row,col) == mines[mine][1] or (row,col) == mines[mine][2]:
+            return True
+    return False
+
 def put_mines_in_board(board):
     mines=[]
     row = random.randint(0, BOARD_ROWS - 1)  # roll random number between 0-len-3 because the mine length is 3
@@ -29,7 +35,7 @@ def put_mines_in_board(board):
         row=random.randint(0,BOARD_ROWS-1)#roll random number between 0-len-3 because the mine length is 3
         col=random.randint(0,BOARD_COLUMNS-3)
         #checks edge cases
-        while board[row][col] == SOLDIER or board[row][col+1] == SOLDIER or board[row][col+2] == SOLDIER or (row,col) in mines[i] or (row,col+1) in mines[i] or (row,col+2) in mines[i] or board[row][col]==FLAG or board[row][col+1]==FLAG or board[row][col+2]==FLAG :
+        while  is_mine_exist(mines,row,col) or board[row][col] == SOLDIER or board[row][col+1] == SOLDIER or board[row][col+2] == SOLDIER  or board[row][col]==FLAG or board[row][col+1]==FLAG or board[row][col+2]==FLAG :
             row = random.randint(0, BOARD_ROWS - 3)
             col = random.randint(0, BOARD_COLUMNS - 3)
         mine=[(row,col),(row,col+1),(row,col+2)]
