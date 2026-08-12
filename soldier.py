@@ -1,8 +1,9 @@
+from consts import SOLDIER
 new_player=[]
-for row in range(0,3):
+for row in range(4):
     new_player.append([])
-    for column in range(0,1):
-        new_player[row].append("player")
+    for column in range(2):
+        new_player[row].append(SOLDIER)
 def player_index(row, column):
     index_list=[]
     current_index=[]
