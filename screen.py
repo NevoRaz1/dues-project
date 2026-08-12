@@ -3,10 +3,12 @@ import pygame
 gridDisplay = pygame.display.set_mode((200, 200))
 pygame.display.get_surface().fill((200, 200, 200))  # background
 
-matrix = [[1 ,1 ,0 ,1],
-          [1 ,0 ,0 ,1],
-          [1 ,1 ,0 ,1],
-          [1 ,1 ,1 ,1]]
+matrix = []
+for row in range(0, 25):
+    matrix.append([])
+    for column in range(0, 50):
+        matrix[row].append(0)
+
 # we use the sizes to draw as well as to do our "steps" in the loops.
 grid_node_width = 10
 grid_node_height = 10
