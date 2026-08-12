@@ -22,6 +22,12 @@ def put_mines_in_board(board):
         for mine_first_square in mine:
             board[mine_first_square[0]][mine_first_square[1]]=MINE
 put_mines_in_board(board)
+
+
+def put_flag(board):
+    for row in range(22,BOARD_ROWS):
+        for column in range(46,BOARD_COLUMNS):
+            board[row][column]=FLAG
+put_flag(board)
 for i in board:
     print(i)
-
