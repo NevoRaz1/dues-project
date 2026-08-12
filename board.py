@@ -5,7 +5,7 @@ for row in range(BOARD_ROWS):
     board.append([])
     for column in range(BOARD_COLUMNS):
         board[row].append(GROUND)
-print(len(board))
+
 
 def put_mines_in_board(board):
     mines=[]
