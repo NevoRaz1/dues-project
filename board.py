@@ -14,14 +14,17 @@ def put_flag(board):
             board[row][column]=FLAG
 def put_mines_in_board(board):
     mines=[]
-    row = random.randint(0, BOARD_ROWS)  # roll random number between 0-len-3 because the mine length is 3
+    row = random.randint(0, BOARD_ROWS - 1)  # roll random number between 0-len-3 because the mine length is 3
     col = random.randint(0, BOARD_COLUMNS - 3)
+    while  board[row][col] == FLAG or board[row][col + 1] == FLAG or board[row][col + 2] == FLAG:
+        row = random.randint(0, BOARD_ROWS - 3)
+        col = random.randint(0, BOARD_COLUMNS - 3)
     mine = [(row, col), (row, col + 1), (row, col + 2)]
     mines.append(mine)
     for i in range(19):#run 20 times for 20 mines
         row=random.randint(0,BOARD_ROWS-1)#roll random number between 0-len-3 because the mine length is 3
         col=random.randint(0,BOARD_COLUMNS-3)
-        while (row,col) in mines[i] and (row,col+1) in mines[i] and (row,col+2) in mines[i] and board[row][col]==FLAG and board[row][col+1]==FLAG and board[row][col+2]==FLAG :
+        while (row,col) in mines[i] or (row,col+1) in mines[i] or (row,col+2) in mines[i] or board[row][col]==FLAG or board[row][col+1]==FLAG or board[row][col+2]==FLAG :
             row = random.randint(0, BOARD_ROWS - 3)
             col = random.randint(0, BOARD_COLUMNS - 3)
         mine=[(row,col),(row,col+1),(row,col+2)]
