@@ -7,11 +7,10 @@ def create_board():
         for column in range(BOARD_COLUMNS):
             board[row].append(GROUND)
     return board
-def add_soldiers(board):
+def add_soldier(board):
     for row in range(4):
         for col in range(2):
             board[row][col]=SOLDIER
-
 def put_flag(board):
     for row in range(22,BOARD_ROWS):
         for column in range(46,BOARD_COLUMNS):
@@ -21,7 +20,6 @@ def is_mine_exist(mines,row,col):
         if mines[mine][0]==(row,col) or (row,col) == mines[mine][1] or (row,col) == mines[mine][2]:
             return True
     return False
-
 def put_mines_in_board(board):
     mines=[]
     row = random.randint(0, BOARD_ROWS - 1)  # roll random number between 0-len-3 because the mine length is 3
@@ -50,7 +48,7 @@ def put_mines_in_board(board):
 
 
 board=create_board()
-add_soldiers(board)
+add_soldier(board)
 put_flag(board)
 put_mines_in_board(board)
 
