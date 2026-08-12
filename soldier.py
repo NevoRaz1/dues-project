@@ -1,16 +1,19 @@
-from consts import SOLDIER
-new_player=[]
-for row in range(4):
-    new_player.append([])
-    for column in range(2):
-        new_player[row].append(SOLDIER)
+from consts import SOLDIER,BOARD_ROWS
+def create_soldier():
+    new_player=[]
+    for row in range(4):
+        new_player.append([])
+        for column in range(2):
+            new_player[row].append(SOLDIER)
+from board import where_is_soldier
+
 def player_index(row, column):
-    index_list=[]
-    current_index=[]
-    for i in range (row,row+4):
-        for j in range (column,column+2):
-            index_list.append([i,j])
-    return index_list
+
+def player_move(player,letter):
+    player[]
+    if letter=='a':
+
+
 
 def foot_index(row, column):
     index_list=[]
