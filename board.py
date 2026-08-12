@@ -1,10 +1,9 @@
 import random
-import consts
-from consts import BOARD_ROWS,BOARD_COLUMNS,GROUND,MINE
+from consts import BOARD_ROWS,BOARD_COLUMNS,GROUND,MINE,FLAG
 board=[]
-for row in range(0, 25):
+for row in range(0,BOARD_ROWS-1):
     board.append([])
-    for column in range(0, 50):
+    for column in range(0,BOARD_COLUMNS-1):
         board[row].append(GROUND)
 
 def put_mines_in_board(board):
@@ -22,6 +21,12 @@ def put_mines_in_board(board):
         for mine_first_square in mine:
             board[mine_first_square[0]][mine_first_square[1]]=MINE
 put_mines_in_board(board)
+
+
+def put_flag(board):
+    for row in range(21,BOARD_ROWS-1):
+        for column in range(45,BOARD_COLUMNS-1):
+            board[row][column]=FLAG
+put_flag(board)
 for i in board:
     print(i)
-
