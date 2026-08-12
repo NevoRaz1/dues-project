@@ -44,12 +44,7 @@ def put_mines_in_board(board):
     for mine in mines:#פה שמים את הפצצות בלוח
         for mine_square in mine:
             board[mine_square[0]][mine_square[1]]=MINE
-# def where_is_soldier(board):
-#     return index_list:
-#     for row in range(len(board)):
-#         for col in range(len(board[row])):
-#             if board[row][col] == SOLDIER:
-#         row col
+
 def is_board_ok(board,row=0,col=0):
 
 
@@ -69,8 +64,3 @@ while not is_board_ok(board):
 add_soldier(board)
 put_flag(board)
 put_mines_in_board(board)
-
-
-
-for i in board:
-    print(i)
