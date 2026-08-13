@@ -58,10 +58,13 @@ while running:
                     running = False
                 soldier_y-=22.8
             elif event.key == pygame.K_LEFT:
-                if move_soldier("a") == False:
-                    screen.blit(lose_text, (100, 100))
-                    running = False
-                soldier_x-=11.4
+                if move_soldier("a") == 0 and move_soldier("a")!=False:
+                    if move_soldier("a") == False:
+                        screen.blit(lose_text, (100, 100))
+                        running = False
+                    soldier_x-=11.4
+
+
             elif event.key == pygame.K_RIGHT:
                 if move_soldier("d") == False:
                     screen.blit(lose_text, (100, 100))
@@ -71,5 +74,5 @@ while running:
     pygame.display.flip()
 
 
-while True:
+for i in range(1000):
     pygame.display.flip()

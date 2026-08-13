@@ -14,11 +14,13 @@ def move_soldier(letter):
     current_index2=pos[1]
     possible_moves=[FLAG,SOLDIER,MINE,GROUND]
     if letter=='a':
-        if board[current_index1[1]]!=0 and board[current_index1[0]][current_index1[1]-1]==MINE:
+        if board[current_index1[0]][current_index1[1]-1]==MINE:
             return False
         if board[current_index1[1]]!=0:
             board[current_index1[0]][current_index1[1]-1]=SOLDIER
             board[current_index2[0]][current_index2[1]]=GROUND
+        else:
+            return 1
 
     if letter=='s':
         if current_index1[0] + 1 != BOARD_ROWS:
@@ -32,31 +34,35 @@ def move_soldier(letter):
                 board[current_index2[0]+1][current_index2[1]]=SOLDIER
                 board[current_index1[0]][current_index1[1]]=GROUND
                 board[current_index2[0]][current_index2[1]]=GROUND
+            else:
+                return 1
 
-
-
-print
-
+    # [3,0]
+    # [3,1]
     if letter=='d':
-        if board[current_index2[0]][current_index2[1]+1]==FLAG:
-            if current_index2[1]+1!=BOARD_COLUMNS and board[current_index2[0]][current_index2[1]+1]==FLAG:
-                return True
-        if board[current_index2[0]][current_index2[1]+1]==MINE:
+        if current_index2[1]+1!=BOARD_COLUMNS and board[current_index2[0]][current_index2[1]+1]==FLAG:
+            return True
+
+        if current_index2[1]+1!=BOARD_COLUMNS and board[current_index2[0]][current_index2[1]+1]==MINE:
             return False
         if current_index2[1]+1!=BOARD_COLUMNS:
             board[current_index2[0]][current_index2[1]+1]=SOLDIER
             board[current_index1[0]][current_index1[1]]=GROUND
-
+            return 0#אפשר לזוז
+        else:
+            return 1#אי אפשר לזוז
     if letter=='w':
-        if board[current_index1[0]+1][current_index1[1]]==MINE:
-            if current_index1[0]>3 and board[current_index1[0]+1][current_index1[1]]==MINE:
-                    return False
+
+        if current_index1[0]>3 and board[current_index1[0]+1][current_index1[1]]==MINE and board[current_index2[0]+1][current_index2[1]]==MINE:
+                return False
         if current_index1[0]>3:
             if board[current_index1[0]-1][current_index1[1]] in possible_moves and board[current_index2[0]-1][current_index2[1]] in possible_moves:
                 board[current_index1[0]-1][current_index1[1]]=SOLDIER
                 board[current_index2[0]-1][current_index2[1]]=SOLDIER
                 board[current_index1[0]][current_index1[1]]=GROUND
                 board[current_index2[0]][current_index2[1]]=GROUND
+        else:
+            return 1
 
 
 
@@ -73,3 +79,8 @@ def foot_index(row, column):
     index_list.append([row+3,column+1])
     return index_list
 
+letter=input('Enter letter: ')
+while True:
+    for i in board:
+        print(i)
+    letter=input('Enter letter: ')
