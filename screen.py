@@ -26,6 +26,7 @@ font = pygame.font.Font(None, 20)
 
 lose_font = pygame.font.Font(None, 100)
 lose_text = lose_font.render("You Lose!",True,(255,255,255))
+win_text = lose_font.render("You Win!",True,(255,255,255))
 
 soldier_x = where_is_soldier(board)[0][0]
 soldier_y=30
@@ -48,28 +49,47 @@ while running:
             quit()
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_DOWN:
-                if move_soldier("s") == False:
+                if move_soldier("s")!=1 and  move_soldier("s") == False:
                     screen.blit(lose_text, (100, 100))
                     running = False
-                soldier_y+=22.8
+                elif move_soldier("s")!=1 and move_soldier("s") == True:
+                    screen.blit(win_text, (100, 100))
+                    running = False
+                elif move_soldier("s") !=1:
+                    soldier_y+=22.8
+
             elif event.key == pygame.K_UP:
-                if move_soldier("w") == False:
+                if  move_soldier("w") == False:
                     screen.blit(lose_text, (100, 100))
                     running = False
-                soldier_y-=22.8
+                elif move_soldier("w") == True:
+                    screen.blit(win_text, (100, 100))
+                    running = False
+                elif move_soldier("w")!=1:
+                    soldier_y -= 22.8
+
             elif event.key == pygame.K_LEFT:
-                if move_soldier("a") == 0 and move_soldier("a")!=False:
-                    if move_soldier("a") == False:
-                        screen.blit(lose_text, (100, 100))
-                        running = False
-                    soldier_x-=11.4
+                if move_soldier("a")!=1 and move_soldier("a") == False:
+                    screen.blit(lose_text, (100, 100))
+                    running = False
+                elif move_soldier("a")!=1 and move_soldier("a") == True:
+                    screen.blit(win_text, (100, 100))
+                    running = False
+                elif move_soldier("a") != 1:
+                    soldier_y -= 11.4
+
 
 
             elif event.key == pygame.K_RIGHT:
-                if move_soldier("d") == False:
+                if move_soldier("d")!=1 and move_soldier("d") == False:
                     screen.blit(lose_text, (100, 100))
                     running = False
-                soldier_x+=11.4
+                elif move_soldier("d")!=1 and move_soldier("d") == True:
+                    screen.blit(win_text, (100, 100))
+                    running = False
+                elif move_soldier("d") !=1:
+                    soldier_y += 11.4
+
 
     pygame.display.flip()
 
