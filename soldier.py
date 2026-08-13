@@ -14,7 +14,7 @@ def move_soldier(letter):
     current_index2=pos[1]
     possible_moves=[FLAG,SOLDIER,MINE,GROUND]
     if letter=='a':
-        if board[current_index1[0]][current_index1[1]-1]==MINE:
+        if board[current_index1[1]]!=0 and board[current_index1[0]][current_index1[1]-1]==MINE:
             print("you lose")
             return False
         if board[current_index1[1]]!=0:
@@ -24,6 +24,7 @@ def move_soldier(letter):
         else:
             return False
     if letter=='s':
+        if current_index1[0] + 1 != BOARD_ROWS:
             if board[current_index1[0]+1][current_index1[1]]==FLAG or board[current_index2[0]+1][current_index2[1]]==FLAG:
                 print("you win")
             if board[current_index1[0]][current_index1[1]+1]==MINE or board[current_index2[0]][current_index2[1]+1]==MINE:
@@ -42,10 +43,10 @@ def move_soldier(letter):
 
 
     if letter=='d':
-        if board[current_index2[0]][current_index2[1]+1]==FLAG:
+        if current_index2[1]+1!=BOARD_COLUMNS and board[current_index2[0]][current_index2[1]+1]==FLAG:
              print( "you win")
              return False
-        if board[current_index2[0]][current_index2[1]+1]==MINE:
+        if current_index2[1]+1!=BOARD_COLUMNS and board[current_index2[0]][current_index2[1]+1]==MINE:
             print("you lose")
             return False
         if current_index2[1]+1!=BOARD_COLUMNS:
@@ -55,7 +56,7 @@ def move_soldier(letter):
         else:
             return False
     if letter=='w':
-        if board[current_index1[0]+1][current_index1[1]]==MINE:
+        if current_index1[0]>3 and board[current_index1[0]+1][current_index1[1]]==MINE:
             print("you lose")
             return False
         if current_index1[0]>3:
@@ -85,6 +86,5 @@ def foot_index(row, column):
 letter=input("enter")
 while move_soldier(letter):
     for i in board:
-
         print(i)
     letter=input("enter")
