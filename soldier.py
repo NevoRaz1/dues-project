@@ -14,14 +14,14 @@ def move_soldier(letter):
     current_index2=pos[1]
     possible_moves=[FLAG,SOLDIER,MINE,GROUND]
     if letter=='a':
-        if board[current_index1[0]][current_index1[1]-1]==MINE:
-            print("you lose")
+        if board[current_index1[1]]!=0 and board[current_index1[0]][current_index1[1]-1]==MINE:
             return False
         if board[current_index1[1]]!=0:
             board[current_index1[0]][current_index1[1]-1]=SOLDIER
             board[current_index2[0]][current_index2[1]]=GROUND
 
     if letter=='s':
+        if current_index1[0] + 1 != BOARD_ROWS:
             if board[current_index1[0]+1][current_index1[1]]==FLAG or board[current_index2[0]+1][current_index2[1]]==FLAG:
                 return True
             if board[current_index1[0]][current_index1[1]+1]==MINE or board[current_index2[0]][current_index2[1]+1]==MINE:
@@ -35,11 +35,12 @@ def move_soldier(letter):
 
 
 
-
+print
 
     if letter=='d':
         if board[current_index2[0]][current_index2[1]+1]==FLAG:
-             return False
+            if current_index2[1]+1!=BOARD_COLUMNS and board[current_index2[0]][current_index2[1]+1]==FLAG:
+                return True
         if board[current_index2[0]][current_index2[1]+1]==MINE:
             return False
         if current_index2[1]+1!=BOARD_COLUMNS:
@@ -48,7 +49,8 @@ def move_soldier(letter):
 
     if letter=='w':
         if board[current_index1[0]+1][current_index1[1]]==MINE:
-            return False
+            if current_index1[0]>3 and board[current_index1[0]+1][current_index1[1]]==MINE:
+                    return False
         if current_index1[0]>3:
             if board[current_index1[0]-1][current_index1[1]] in possible_moves and board[current_index2[0]-1][current_index2[1]] in possible_moves:
                 board[current_index1[0]-1][current_index1[1]]=SOLDIER
