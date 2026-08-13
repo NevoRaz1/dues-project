@@ -1,6 +1,5 @@
 from consts import SOLDIER, MINE, FLAG,BOARD_ROWS,BOARD_COLUMNS,GROUND
-from board import create_board
-board = create_board()
+
 def where_is_soldier(board):
     index_list=[]
     for row in range(BOARD_ROWS):
@@ -8,7 +7,7 @@ def where_is_soldier(board):
             if board[row][col] == SOLDIER:
                     index_list.append([row,col])
     return index_list
-def move_soldier(letter):
+def move_soldier(board,letter):
     pos=where_is_soldier(board)
     current_index1=pos[0]
     current_index2=pos[1]
@@ -79,8 +78,3 @@ def foot_index(row, column):
     index_list.append([row+3,column+1])
     return index_list
 
-letter=input('Enter letter: ')
-while True:
-    for i in board:
-        print(i)
-    letter=input('Enter letter: ')

@@ -1,5 +1,4 @@
 import pygame
-import time
 from soldier import where_is_soldier,move_soldier
 
 pygame.init()
@@ -48,30 +47,45 @@ while running:
             quit()
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_DOWN:
-                if move_soldier("s") == False:
+                if move_soldier(board,"s") == False:
                     screen.blit(lose_text, (100, 100))
                     running = False
                 soldier_y+=22.8
+                for i in board:
+                    print(i)
+                print("\n \n \n \n ")
             elif event.key == pygame.K_UP:
-                if move_soldier("w") == False:
+                if move_soldier(board,"w") == False:
                     screen.blit(lose_text, (100, 100))
                     running = False
                 soldier_y-=22.8
+                for i in board:
+                    print(i)
+                print("\n \n \n \n ")
             elif event.key == pygame.K_LEFT:
-                if move_soldier("a") == 0 and move_soldier("a")!=False:
-                    if move_soldier("a") == False:
+                if move_soldier(board,"a") == 0 and move_soldier(board,"a")!=False:
+                    if move_soldier(board,"a") == False:
                         screen.blit(lose_text, (100, 100))
                         running = False
                     soldier_x-=11.4
+                for i in board:
+                    print(i)
+                print("\n \n \n \n ")
 
 
             elif event.key == pygame.K_RIGHT:
-                if move_soldier("d") == False:
+                if move_soldier(board,"d") == False:
                     screen.blit(lose_text, (100, 100))
                     running = False
                 soldier_x+=11.4
+                for i in board:
+                    print(i)
+                print("\n \n \n \n ")
 
     pygame.display.flip()
+
+
+
 
 
 for i in range(1000):
