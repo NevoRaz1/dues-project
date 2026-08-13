@@ -5,13 +5,13 @@ def where_is_soldier(board):
     for row in range(len(board)):
         for col in range(len(board[row])):
             if board[row][col] == SOLDIER:
-                    index_list.append((row,col))
+                    index_list.append([row,col])
     return index_list
 
 
 def player_is_lose():
-    foot_list=where_is_soldier(board)
-    for foot in foot_list:
+    foot_index=where_is_soldier(board)
+    for foot in foot_index:
         if board[foot[0]][foot[1]]==MINE :
             return True
     return False
