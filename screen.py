@@ -25,7 +25,7 @@ screen.blit(grass_img, (random.randint(0, 100), 30))
 font = pygame.font.Font(None, 20)
 
 lose_font = pygame.font.Font(None, 100)
-lose_text = font.render("You Lose!",True,(255,255,255))
+lose_text = lose_font.render("You Lose!",True,(255,255,255))
 
 soldier_x = where_is_soldier(board)[0][0]
 soldier_y=30
@@ -71,4 +71,5 @@ while running:
     pygame.display.flip()
 
 
-pygame.quit()
+while True:
+    pygame.display.flip()
