@@ -3,8 +3,8 @@ from board import create_board
 board = create_board()
 def where_is_soldier(board):
     index_list=[]
-    for row in range(len(board)):
-        for col in range(len(board[row])):
+    for row in range(BOARD_ROWS):
+        for col in range(BOARD_COLUMNS):
             if board[row][col] == SOLDIER:
                     index_list.append([row,col])
     return index_list
