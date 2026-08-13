@@ -25,6 +25,7 @@ font = pygame.font.Font(None, 20)
 
 lose_font = pygame.font.Font(None, 100)
 lose_text = lose_font.render("You Lose!",True,(255,255,255))
+win_text = lose_font.render("You Win!",True,(255,255,255))
 
 soldier_x = where_is_soldier(board)[0][0]
 soldier_y=30
@@ -47,6 +48,7 @@ while running:
             quit()
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_DOWN:
+
                 if move_soldier(board,"s") == False:
                     screen.blit(lose_text, (100, 100))
                     running = False
@@ -81,6 +83,7 @@ while running:
                 for i in board:
                     print(i)
                 print("\n \n \n \n ")
+
 
     pygame.display.flip()
 

@@ -9,59 +9,59 @@ def where_is_soldier(board):
     return index_list
 def move_soldier(board,letter):
     pos=where_is_soldier(board)
-    current_index1=pos[0]
-    current_index2=pos[1]
+    left_foot=pos[0]
+    right_foot=pos[1]
     possible_moves=[FLAG,SOLDIER,MINE,GROUND]
     if letter=='a':
-        if board[current_index1[0]][current_index1[1]-1]==MINE:
-            return False
-        if board[current_index1[1]]!=0:
-            board[current_index1[0]][current_index1[1]-1]=SOLDIER
-            board[current_index2[0]][current_index2[1]]=GROUND
+        if board[left_foot[1]] != 0:
+            if board[left_foot[0]][left_foot[1]-1]==MINE:
+                return False
+
+            board[left_foot[0]][left_foot[1]-1]=SOLDIER
+            board[right_foot[0]][right_foot[1]]=GROUND
         else:
             return 1
 
     if letter=='s':
-        if current_index1[0] + 1 != BOARD_ROWS:
-            if board[current_index1[0]+1][current_index1[1]]==FLAG or board[current_index2[0]+1][current_index2[1]]==FLAG:
-                return True
-            if board[current_index1[0]][current_index1[1]+1]==MINE or board[current_index2[0]][current_index2[1]+1]==MINE:
-                return False
+        if left_foot[0] + 1 != BOARD_ROWS:
+            if left_foot[0] + 1 != BOARD_ROWS:
+                if board[left_foot[0]+1][left_foot[1]]==FLAG or board[right_foot[0]+1][right_foot[1]]==FLAG:
+                    return True
+                if board[left_foot[0]][left_foot[1]+1]==MINE or board[right_foot[0]][right_foot[1]+1]==MINE:
+                    return False
 
-            if current_index1[0]+1!=BOARD_ROWS:
-                board[current_index1[0]+1][current_index1[1]]=SOLDIER
-                board[current_index2[0]+1][current_index2[1]]=SOLDIER
-                board[current_index1[0]][current_index1[1]]=GROUND
-                board[current_index2[0]][current_index2[1]]=GROUND
+                board[left_foot[0]+1][left_foot[1]]=SOLDIER
+                board[right_foot[0]+1][right_foot[1]]=SOLDIER
+                board[left_foot[0]][left_foot[1]]=GROUND
+                board[right_foot[0]][right_foot[1]]=GROUND
             else:
                 return 1
 
     # [3,0]
     # [3,1]
     if letter=='d':
-        if current_index2[1]+1!=BOARD_COLUMNS and board[current_index2[0]][current_index2[1]+1]==FLAG:
-            return True
+        if right_foot[1] + 1 != BOARD_COLUMNS:
+            if right_foot[1]+1!=BOARD_COLUMNS and board[right_foot[0]][right_foot[1]+1]==FLAG:
+                return True
 
-        if current_index2[1]+1!=BOARD_COLUMNS and board[current_index2[0]][current_index2[1]+1]==MINE:
-            return False
-        if current_index2[1]+1!=BOARD_COLUMNS:
-            board[current_index2[0]][current_index2[1]+1]=SOLDIER
-            board[current_index1[0]][current_index1[1]]=GROUND
-            return 0#אפשר לזוז
+            if right_foot[1]+1!=BOARD_COLUMNS and board[right_foot[0]][right_foot[1]+1]==MINE:
+                return False
+            board[right_foot[0]][right_foot[1]+1]=SOLDIER
+            board[left_foot[0]][left_foot[1]]=GROUND
         else:
             return 1#אי אפשר לזוז
     if letter=='w':
-
-        if current_index1[0]>3 and board[current_index1[0]+1][current_index1[1]]==MINE and board[current_index2[0]+1][current_index2[1]]==MINE:
+        if left_foot[0] > 3:
+            if left_foot[0]>3 and board[left_foot[0]+1][left_foot[1]]==MINE and board[right_foot[0]+1][right_foot[1]]==MINE:
                 return False
-        if current_index1[0]>3:
-            if board[current_index1[0]-1][current_index1[1]] in possible_moves and board[current_index2[0]-1][current_index2[1]] in possible_moves:
-                board[current_index1[0]-1][current_index1[1]]=SOLDIER
-                board[current_index2[0]-1][current_index2[1]]=SOLDIER
-                board[current_index1[0]][current_index1[1]]=GROUND
-                board[current_index2[0]][current_index2[1]]=GROUND
-        else:
-            return 1
+            if board[left_foot[0]-1][left_foot[1]] in possible_moves and board[right_foot[0]-1][right_foot[1]] in possible_moves:
+                board[left_foot[0]-1][left_foot[1]]=SOLDIER
+                board[right_foot[0]-1][right_foot[1]]=SOLDIER
+                board[left_foot[0]][left_foot[1]]=GROUND
+                board[right_foot[0]][right_foot[1]]=GROUND
+    else:
+        return 1
+
 
 
 
