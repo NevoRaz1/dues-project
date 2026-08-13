@@ -1,4 +1,6 @@
 import pygame
+import time
+from soldier import where_is_soldier,move_soldier
 
 pygame.init()
 
@@ -18,15 +20,26 @@ grass_img = pygame.transform.scale(grass_img, (32,32))
 screen.blit(grass_img, (random.randint(0, 100), 30))
 
 
-running=True
-from soldier import where_is_soldier,move_soldier
 
+
+font = pygame.font.Font(None, 20)
+
+lose_font = pygame.font.Font(None, 100)
+lose_text = font.render("You Lose!",True,(255,255,255))
+
+soldier_x = where_is_soldier(board)[0][0]
+soldier_y=30
+running=True
 while running:
+
+    # time.sleep(0.5)
     screen.fill((90, 100, 49))
 
-    soldier_location = where_is_soldier(board)
+    text=font.render("Welcome to The Flag game.\n Have Fun!",True,(255,255,255))
+    screen.blit(text,(70,10))
 
-    screen.blit(soldier_img,(soldier_location[0][0],30))
+
+    screen.blit(soldier_img,(soldier_x,soldier_y))
 
 
     events = pygame.event.get()
@@ -34,12 +47,28 @@ while running:
         if event.type == pygame.QUIT:
             quit()
         if event.type == pygame.KEYDOWN:
-            move_soldier("s")
-        if event.type == pygame.K_RIGHT:
-            move_soldier("d")
-        if event.type == pygame.K_LEFT:
-            move_soldier("a")
-        if event.type == pygame.K_UP:
-            move_soldier("w")
-        pygame.display.flip()
+            if event.key == pygame.K_DOWN:
+                if move_soldier("s") == False:
+                    screen.blit(lose_text, (100, 100))
+                    running = False
+                soldier_y+=22.8
+            elif event.key == pygame.K_UP:
+                if move_soldier("w") == False:
+                    screen.blit(lose_text, (100, 100))
+                    running = False
+                soldier_y-=22.8
+            elif event.key == pygame.K_LEFT:
+                if move_soldier("a") == False:
+                    screen.blit(lose_text, (100, 100))
+                    running = False
+                soldier_x-=11.4
+            elif event.key == pygame.K_RIGHT:
+                if move_soldier("d") == False:
+                    screen.blit(lose_text, (100, 100))
+                    running = False
+                soldier_x+=11.4
+
+    pygame.display.flip()
+
+
 pygame.quit()
