@@ -68,8 +68,3 @@ def is_board_ok(board, row=2, col=0):
 
 
 
-
-
-board=create_board()
-for i in board:
-    print(i)

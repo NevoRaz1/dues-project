@@ -1,5 +1,6 @@
 from consts import SOLDIER, MINE, FLAG,BOARD_ROWS,BOARD_COLUMNS,GROUND
-from board import board
+from board import create_board
+board = create_board()
 def where_is_soldier(board):
     index_list=[]
     for row in range(len(board)):
@@ -48,14 +49,6 @@ def move_soldier(letter):
             return True
         else:
             return False
-
-
-letter=input("enter a,s,d,w: ")
-while move_soldier(letter):
-    for i in board:
-        print(i)
-
-    letter=input("enter a,s,d,w: ")
 
 
 

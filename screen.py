@@ -19,7 +19,7 @@ screen.blit(grass_img, (random.randint(0, 100), 30))
 
 
 running=True
-from soldier import where_is_soldier
+from soldier import where_is_soldier,move_soldier
 
 while running:
     screen.fill((90, 100, 49))
