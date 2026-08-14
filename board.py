@@ -6,11 +6,17 @@ def create_board():
         board.append([])
         for column in range(BOARD_COLUMNS):
             board[row].append(GROUND)
+    add_soldier(board)
+    put_flag(board)
+    put_mines_in_board(board)
+    while not is_board_ok(board):
+        board = create_board()
+        add_soldier(board)
+        put_flag(board)
+        put_mines_in_board(board)
     return board
 def add_soldier(board):
-    for row in range(4):
-        for col in range(2):
-            board[row][col]=SOLDIER
+    board[3][1],board[3][0]=SOLDIER,SOLDIER
 def put_flag(board):
     for row in range(22,BOARD_ROWS):
         for column in range(46,BOARD_COLUMNS):
@@ -44,22 +50,22 @@ def put_mines_in_board(board):
     for mine in mines:#פה שמים את הפצצות בלוח
         for mine_square in mine:
             board[mine_square[0]][mine_square[1]]=MINE
+def is_board_ok(board, row=2, col=0):
 
-def is_board_ok(board,row=0,col=0):
+    if board[row][col] == FLAG or board[row][col+1] == FLAG:
+        return True
 
-    if board[row][col+1] != MINE and col+1<BOARD_COLUMNS-1 and board[row][col+2] != MINE:
-        return is_board_ok(board,row,col+1)
-    if board[row+1][col] != MINE and row+1<BOARD_ROWS-1:
-        return is_board_ok(board, row+1, col)
+    if col + 2 < BOARD_COLUMNS and board[row][col+2] != MINE:
+        if is_board_ok(board, row, col + 1):
+            return True
+
+    if row + 1 < BOARD_ROWS and board[row+1][col] != MINE and board[row+1][col+1] != MINE:
+        if is_board_ok(board, row + 1, col):
+            return True
 
     return False
 
-board=create_board()
-add_soldier(board)
-put_flag(board)
-put_mines_in_board(board)
 
-
-
-for i in board:
-    print(i)
+# board = create_board()
+# for i in board:
+#     print(i)
