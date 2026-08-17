@@ -1,6 +1,6 @@
 import time
 
-import GPIO
+
 import pygame
 from soldier import where_is_soldier,move_soldier,can_soldier_move
 from consts import WIDTH,HIGHT,BOARD_ROWS,BOARD_COLUMNS,MINE
@@ -83,14 +83,17 @@ soldier_x = where_is_soldier(board)[0][1]*cell_size
 soldier_y=(where_is_soldier(board)[0][0]-3)*cell_size
 
 def run_game():
+    text_massage=True
     running = True
     while running:
+
         soldier_x = where_is_soldier(board)[0][1] * cell_size
         soldier_y = (where_is_soldier(board)[0][0] - 3) * cell_size
 
         put_background(grass_list, grass_img, flag_img)
         screen.blit(soldier_img,(soldier_x,soldier_y))
-
+        if text_massage == True:
+            screen.blit(text, (70, 10))
 
         events = pygame.event.get()
         for event in events:
@@ -158,6 +161,7 @@ def run_game():
                     show_xray(board, screen, soldier_img, soldier_x, soldier_y, mine_img, cell_size)
                     time.sleep(1)  # שניה
                     pygame.event.clear()#כל קליטה של כפתורים במהלך השניה ימחקו כי אסור לו לזוז
+                text_massage=False
         pygame.display.flip()
 
 
