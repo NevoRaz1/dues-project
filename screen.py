@@ -1,5 +1,6 @@
 import time
 
+import GPIO
 import pygame
 from soldier import where_is_soldier,move_soldier,can_soldier_move
 from consts import WIDTH,HIGHT,BOARD_ROWS,BOARD_COLUMNS,MINE
@@ -58,10 +59,10 @@ def show_xray(board, screen, soldier_img, soldier_x, soldier_y, mine_img, cell_s
     for row in range(BOARD_ROWS):
         for col in range(BOARD_COLUMNS):
             if board[row][col] == MINE:
-                if col == 0 or board[row][col -1] != MINE:
+                if col == 0 or board[row][col -1] != MINE:# אם אנחנו בעמודה ה 0 אז פשוט מציירים ואם אנחנו הגענו לפצצה אז אנחנו בודקים עם היא שמאלית ביותר
                     mine_x = col * cell_size
                     mine_y = row * cell_size
-                    screen.blit(mine_img, (mine_x, mine_y))
+                    screen.blit(mine_img, (mine_x, mine_y))#ומציירים רק את הפצצה השמאלית כי היא באורך של שלוש ולכן צריך רק את השמאלית
 
     screen.blit(soldier_img, (soldier_x, soldier_y))
     pygame.display.flip()
@@ -98,7 +99,7 @@ def run_game():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_DOWN:
                     if can_soldier_move(board,"s")==True:
-                        do_win=move_soldier(board,"s")
+                        do_win=move_soldier(board,"s")#פרמטר שמזיז את השחקן ולאחר מכן מקבל תשובה אם הוא ניצח
                         if do_win == False:
                             screen.blit(lose_text, (200, 200))
                             running = False
@@ -156,7 +157,7 @@ def run_game():
                 elif event.key == pygame.K_RETURN:
                     show_xray(board, screen, soldier_img, soldier_x, soldier_y, mine_img, cell_size)
                     time.sleep(1)  # שניה
-                    pygame.event.clear()
+                    pygame.event.clear()#כל קליטה של כפתורים במהלך השניה ימחקו כי אסור לו לזוז
         pygame.display.flip()
 
 
