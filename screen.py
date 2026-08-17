@@ -8,7 +8,7 @@ import random
 pygame.init()
 # מילון למעקב אחר זמני לחיצה על מקשי ספרות
 number_and_time = {}
-
+from Database import add_game_to_save
 # מיפוי מקשי הספרות (כולל Numpad) לערכים המספריים שלהם
 NUMBER_KEYS = {
     pygame.K_1: 1, pygame.K_2: 2, pygame.K_3: 3,
@@ -186,11 +186,12 @@ def run_game():
             elif event.type == pygame.KEYUP:  # בודק האם המקש הורם
                 if event.key in number_and_time.keys():
                     press_duration = time.time() - number_and_time[event.key]  # מחסר את הזמן העכשווי לזמן שהוא נלחץ
+                    slot_number = number_and_time[event.key]
                     number_and_time.pop(event.key)
-                    slot_number = NUMBER_KEYS[event.key]
                     if press_duration <= 1.0:
                         save_game(board, slot_number,game_saves)
-                        game_saves
+                        add_game_to_save(game_saves,slot_number)
+
 
         pygame.display.flip()
 
