@@ -47,7 +47,7 @@ def move_soldier(board,letter):
 
         if board[left_foot[0]+1][left_foot[1]]==FLAG or board[right_foot[0]+1][right_foot[1]]==FLAG:
             return True
-        if board[left_foot[0]][left_foot[1]+1]==MINE or board[right_foot[0]][right_foot[1]+1]==MINE:
+        if board[left_foot[0]+1][left_foot[1]]==MINE or board[right_foot[0]+1][right_foot[1]]==MINE:
             return False
 
         board[left_foot[0]+1][left_foot[1]]=SOLDIER
@@ -68,7 +68,7 @@ def move_soldier(board,letter):
 
     if letter=='w':
 
-            if  board[left_foot[0]+1][left_foot[1]]==MINE and board[right_foot[0]+1][right_foot[1]]==MINE:
+            if  board[left_foot[0]-1][left_foot[1]]==MINE and board[right_foot[0]-1][right_foot[1]]==MINE:
                 return False
 
             board[left_foot[0]-1][left_foot[1]]=SOLDIER
