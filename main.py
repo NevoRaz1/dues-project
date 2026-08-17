@@ -1,3 +1,3 @@
-from board import create_board
-def capture_the_flag():
-    board=create_board()
+if __name__ == "__main__":
+    from screen import run_game
+    run_game()

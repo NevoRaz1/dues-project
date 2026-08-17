@@ -1,6 +1,8 @@
+import time
+
 import pygame
 from soldier import where_is_soldier,move_soldier,can_soldier_move
-from consts import WIDTH,HIGHT,BOARD_ROWS,BOARD_COLUMNS
+from consts import WIDTH,HIGHT,BOARD_ROWS,BOARD_COLUMNS,MINE
 import random
 pygame.init()
 
@@ -16,7 +18,9 @@ board = create_board()
 soldier_img = pygame.image.load("soldier.png").convert_alpha()
 soldier_img = pygame.transform.scale(soldier_img, (2*cell_size,4*cell_size))
 
-#put 20 grasses
+
+mine_img = pygame.image.load("mine.png").convert_alpha()
+mine_img = pygame.transform.scale(mine_img, (cell_size*3, cell_size))
 
 
 grass_img = pygame.image.load("grass.png").convert_alpha()
@@ -43,6 +47,24 @@ def put_background(grass_list,grass_img,flag_img):
         screen.blit(grass_img,grass)
 
 
+def show_xray(board, screen, soldier_img, soldier_x, soldier_y, mine_img, cell_size):
+    screen.fill((0, 0, 0))
+
+    for row in range(BOARD_ROWS + 1):
+        pygame.draw.line(screen, (0, 100, 0), (0, row * cell_size), (WIDTH, row * cell_size))
+    for col in range(BOARD_COLUMNS + 1):
+        pygame.draw.line(screen, (0, 100, 0), (col * cell_size, 0), (col * cell_size, HIGHT))
+
+    for row in range(BOARD_ROWS):
+        for col in range(BOARD_COLUMNS):
+            if board[row][col] == MINE:
+                if col == 0 or board[row][col -1] != MINE:
+                    mine_x = col * cell_size
+                    mine_y = row * cell_size
+                    screen.blit(mine_img, (mine_x, mine_y))
+
+    screen.blit(soldier_img, (soldier_x, soldier_y))
+    pygame.display.flip()
 
 
 
@@ -58,91 +80,88 @@ for i in range(20):
 put_background(grass_list,grass_img,flag_img)
 soldier_x = where_is_soldier(board)[0][1]*cell_size
 soldier_y=(where_is_soldier(board)[0][0]-3)*cell_size
-running=True
-while running:
-    soldier_x = where_is_soldier(board)[0][1] * cell_size
-    soldier_y = (where_is_soldier(board)[0][0] - 3) * cell_size
 
-    put_background(grass_list, grass_img, flag_img)
-    screen.blit(soldier_img,(soldier_x,soldier_y))
+def run_game():
+    running = True
+    while running:
+        soldier_x = where_is_soldier(board)[0][1] * cell_size
+        soldier_y = (where_is_soldier(board)[0][0] - 3) * cell_size
 
-
-    events = pygame.event.get()
-    for event in events:
-        if event.type == pygame.QUIT:
-            quit()
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_DOWN:
-                if can_soldier_move(board,"s")==True:
-                    do_win=move_soldier(board,"s")
-                    if do_win == False:
-                        screen.blit(lose_text, (200, 200))
-                        running = False
-                        break
-                    elif do_win == True:
-                        screen.blit(win_text,(200,200))
-                        running=False
-                        break
-                for i in board:
-                    print(i)
-                print("\n \n \n \n ")
+        put_background(grass_list, grass_img, flag_img)
+        screen.blit(soldier_img,(soldier_x,soldier_y))
 
 
-            elif event.key == pygame.K_UP:
-                if can_soldier_move(board, "w") == True:
-                    do_win = move_soldier(board, "w")
-                    if do_win == False:
-                        screen.blit(lose_text, (200, 200))
-                        running = False
-                        break
-                    elif do_win == True:
-                        screen.blit(win_text, (200, 200))
-                        running = False
-                        break
-
-                for i in board:
-                    print(i)
-                print("\n \n \n \n ")
-
-            elif event.key == pygame.K_LEFT:
-                if can_soldier_move(board, "a") == True:
-                    do_win = move_soldier(board, "a")
-                    if do_win == False:
-                        screen.blit(lose_text, (200, 200))
-                        running = False
-                        break
-                    elif do_win == True:
-                        screen.blit(win_text, (200, 200))
-                        running = False
-                        break
-
-                for i in board:
-                    print(i)
-                print("\n \n \n \n ")
+        events = pygame.event.get()
+        for event in events:
+            if event.type == pygame.QUIT:
+                quit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_DOWN:
+                    if can_soldier_move(board,"s")==True:
+                        do_win=move_soldier(board,"s")
+                        if do_win == False:
+                            screen.blit(lose_text, (200, 200))
+                            running = False
+                            break
+                        elif do_win == True:
+                            screen.blit(win_text,(200,200))
+                            running=False
+                            break
 
 
-            elif event.key == pygame.K_RIGHT:
-                if can_soldier_move(board, "d") == True:
-                    do_win = move_soldier(board, "d")
-                    if do_win == False:
-                        screen.blit(lose_text, (200, 200))
-                        running = False
-                        break
-                    elif do_win == True:
-                        screen.blit(win_text, (200, 200))
-                        running = False
-                        break
 
-                for i in board:
-                    print(i)
-                print("\n \n \n \n ")
+                elif event.key == pygame.K_UP:
+                    if can_soldier_move(board, "w") == True:
+                        do_win = move_soldier(board, "w")
+                        if do_win == False:
+                            screen.blit(lose_text, (200, 200))
+                            running = False
+                            break
+                        elif do_win == True:
+                            screen.blit(win_text, (200,200))
+                            running = False
+                            break
 
 
-    pygame.display.flip()
+
+                elif event.key == pygame.K_LEFT:
+                    if can_soldier_move(board, "a") == True:
+                        do_win = move_soldier(board, "a")
+                        if do_win == False:
+                            screen.blit(lose_text, (200, 200))
+                            running = False
+                            break
+                        elif do_win == True:
+                            screen.blit(win_text, (200, 200))
+                            running = False
+                            break
+
+
+
+
+                elif event.key == pygame.K_RIGHT:
+                    if can_soldier_move(board, "d") == True:
+                        do_win = move_soldier(board, "d")
+                        if do_win == False:
+                            screen.blit(lose_text, (200, 200))
+                            running = False
+                            break
+                        elif do_win == True:
+                            screen.blit(win_text, (200, 200))
+                            running = False
+                            break
+
+
+
+                elif event.key == pygame.K_RETURN:
+                    show_xray(board, screen, soldier_img, soldier_x, soldier_y, mine_img, cell_size)
+                    time.sleep(1)  # שניה
+                    pygame.event.clear()
+        pygame.display.flip()
 
 
 
 
 
-for i in range(3000):
-    pygame.display.flip()
+    for i in range(3000):
+        pygame.display.flip()
