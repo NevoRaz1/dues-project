@@ -1,104 +1,73 @@
 import pygame
-from soldier import where_is_soldier, move_soldier, can_soldier_move
-import time
+from soldier import where_is_soldier,move_soldier,can_soldier_move
+from consts import WIDTH,HIGHT,BOARD_ROWS,BOARD_COLUMNS,MINE
 import random
+
+cell_size=WIDTH//BOARD_COLUMNS
+
+screen = pygame.display.set_mode((WIDTH,HIGHT))
+
 from board import create_board
-from consts import MINE,WIDTH,HEIGHT
-
-pygame.init()
-
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
-
-
 board = create_board()
 
-ROWS = 25
-COLS = 50
-
-# גודל משבצת בפיקסלים
-CELL_WIDTH = 640 / COLS   # 12.8
-CELL_HEIGHT = 640 / ROWS  # 25.6
-
-# מידות החייל במשבצות: 2 לרוחב (רגליים), 4 לגובה (גוף וראש)
-SOLDIER_COLS = 2
-SOLDIER_ROWS = 4
 
 show_grid_until = 0
+flag_img = pygame.image.load("flag.png").convert_alpha()
+flag_img = pygame.transform.scale(flag_img, (3*cell_size, 4*cell_size))
 
 mine_img = pygame.image.load("mine.png").convert_alpha()
 
-# טעינת התמונה וחיתוך שוליים שקופים למניעת חריגה מחוץ לגבולות המשבצת
-raw_soldier_img = pygame.image.load("soldier.png").convert_alpha()
-bounding_rect = raw_soldier_img.get_bounding_rect()
-cropped_soldier_img = raw_soldier_img.subsurface(bounding_rect)
+soldier_img = pygame.image.load("soldier.png").convert_alpha()
+soldier_img = pygame.transform.scale(soldier_img, (2*cell_size,4*cell_size))
 
 grass_img = pygame.image.load("grass.png").convert_alpha()
-grass_img = pygame.transform.scale(grass_img, (32, 32))
+grass_img = pygame.transform.scale(grass_img, (cell_size, cell_size))
 
-font = pygame.font.Font(None, 20)
-lose_font = pygame.font.Font(None, 100)
-lose_text = lose_font.render("You Lose!", True, (255, 255, 255))
-win_text = lose_font.render("You Win!", True, (255, 255, 255))
+font = pygame.font.Font(None, 24)
+
+lose_font = pygame.font.Font(None, 200)
+lose_text = lose_font.render("You Lose!",True,(255,255,255))
+win_text = lose_font.render("You Win!",True,(255,255,255))
 
 
-def get_soldier_draw_data(board):
-    """
-    מחשבת את המיקום והגודל המדויק בפיקסלים שננעלים על קווי המשבצות של הגריד.
-    """
-    soldier_pos = where_is_soldier(board)
-    if not soldier_pos:
-        return None, (0, 0)
+def put_background(grass_list,grass_img,flag_img):
 
-    feet_row = soldier_pos[0][0]
-    left_col = min(p[1] for p in soldier_pos)
 
-    # השורה העליונה שבה מתחילה תמונת החייל
-    top_row = feet_row - (SOLDIER_ROWS - 1)
+    screen.fill((90, 100, 49))
+    screen.blit(flag_img, (46*cell_size, 21*cell_size))
 
-    # חישוב נקודות הקצה המדויקות לפי קווי הרשת
-    x1 = int(left_col * CELL_WIDTH)
-    y1 = int(top_row * CELL_HEIGHT)
-    x2 = int((left_col + SOLDIER_COLS) * CELL_WIDTH)
-    y2 = int((feet_row + 1) * CELL_HEIGHT)
-
-    width = x2 - x1
-    height = y2 - y1
-
-    # התאמת התמונה בדיוק לגודל המשבצות
-    scaled_img = pygame.transform.smoothscale(cropped_soldier_img, (width, height))
-    return scaled_img, (x1, y1)
+    for grass in grass_list:
+        screen.blit(grass_img,grass)
 
 
 def draw_special_board(screen, board, soldier_img, soldier_pos):
     width = screen.get_width()
     height = screen.get_height()
 
-    cell_width = width / COLS
-    cell_height = height / ROWS
 
     screen.fill((0, 0, 0))
 
     # קווי הלוח
-    for col in range(COLS + 1):
-        x = int(col * cell_width)
+    for col in range(BOARD_COLUMNS + 1):
+        x = int(col * cell_size)
         pygame.draw.line(screen, (0, 100, 0), (x, 0), (x, height), 3)
         pygame.draw.line(screen, (0, 255, 0), (x, 0), (x, height), 1)
 
-    for row in range(ROWS + 1):
-        y = int(row * cell_height)
+    for row in range(BOARD_ROWS + 1):
+        y = int(row * cell_size)
         pygame.draw.line(screen, (0, 100, 0), (0, y), (width, y), 3)
         pygame.draw.line(screen, (0, 255, 0), (0, y), (width, y), 1)
 
     # מוקשים
-    for row in range(ROWS):
+    for row in range(BOARD_ROWS):
         col = 0
-        while col < COLS:
+        while col < BOARD_COLUMNS:
             if board[row][col] == MINE:
-                x = int(col * cell_width)
-                y = int(row * cell_height)
+                x = int(col * cell_size)
+                y = int(row * cell_size)
 
-                target_width = int(cell_width * 3)
-                target_height = int(cell_height)
+                target_width = int(cell_size * 3)
+                target_height = int(cell_size)
 
                 original_width = mine_img.get_width()
                 original_height = mine_img.get_height()
@@ -123,59 +92,100 @@ def draw_special_board(screen, board, soldier_img, soldier_pos):
     if soldier_img and soldier_pos:
         screen.blit(soldier_img, soldier_pos)
 
+screen.fill((90, 100, 49))
+text=font.render("Welcome to The Flag game.\n Have Fun!",True,(255,255,255))
+screen.blit(text,(70,10))
+screen.blit(flag_img,(46*cell_size,21*cell_size))
+grass_list=[]
+for i in range(20):
+    x=random.randint(0, WIDTH)
+    y=random.randint(0, HIGHT)
+    grass_list.append((x,y))
+put_background(grass_list,grass_img,flag_img)
+soldier_x = where_is_soldier(board)[0][1]*cell_size
+soldier_y=(where_is_soldier(board)[0][0]-3)*cell_size
 
-running = True
-
+running=True
 while running:
+    soldier_x = where_is_soldier(board)[0][1] * cell_size
+    soldier_y = (where_is_soldier(board)[0][0] - 3) * cell_size
 
-    # קבלת התמונה המותאמת והמיקום שננעל על הרשת
-    current_soldier_img, soldier_pixel_pos = get_soldier_draw_data(board)
+    put_background(grass_list, grass_img, flag_img)
+    screen.blit(soldier_img,(soldier_x,soldier_y))
 
-    if time.time() < show_grid_until:
-        draw_special_board(screen, board, current_soldier_img, soldier_pixel_pos)
-    else:
-        screen.fill((90, 100, 49))
-        if current_soldier_img:
-            screen.blit(current_soldier_img, soldier_pixel_pos)
-
-    text = font.render("Welcome to The Flag game.\n Have Fun!", True, (255, 255, 255))
-    screen.blit(text, (70, 10))
 
     events = pygame.event.get()
     for event in events:
         if event.type == pygame.QUIT:
             quit()
         if event.type == pygame.KEYDOWN:
-
-            if event.key == pygame.K_RETURN:
-                show_grid_until = time.time() + 1
-
             if event.key == pygame.K_DOWN:
-                if can_soldier_move(board, "s") == True:
-                    if move_soldier(board, "s") == False:
-                        screen.blit(lose_text, (100, 100))
+                if can_soldier_move(board,"s")==True:
+                    do_win=move_soldier(board,"s")
+                    if do_win == False:
+                        screen.blit(lose_text, (200, 200))
                         running = False
+                        break
+                    elif do_win == True:
+                        screen.blit(win_text,(200,200))
+                        running=False
+                        break
+                for i in board:
+                    print(i)
+                print("\n \n \n \n ")
+
 
             elif event.key == pygame.K_UP:
                 if can_soldier_move(board, "w") == True:
-                    if move_soldier(board, "w") == False:
+                    do_win = move_soldier(board, "w")
+                    if do_win == False:
                         screen.blit(lose_text, (100, 100))
                         running = False
+                        break
+                    elif do_win == True:
+                        screen.blit(win_text, (100, 100))
+                        running = False
+                        break
+
+                for i in board:
+                    print(i)
+                print("\n \n \n \n ")
 
             elif event.key == pygame.K_LEFT:
                 if can_soldier_move(board, "a") == True:
-                    if move_soldier(board, "a") == False:
+                    do_win = move_soldier(board, "a")
+                    if do_win == False:
                         screen.blit(lose_text, (100, 100))
                         running = False
+                        break
+                    elif do_win == True:
+                        screen.blit(win_text, (100, 100))
+                        running = False
+                        break
+
+                for i in board:
+                    print(i)
+                print("\n \n \n \n ")
+
 
             elif event.key == pygame.K_RIGHT:
                 if can_soldier_move(board, "d") == True:
-                    if move_soldier(board, "d") == False:
-                        screen.blit(lose_text, (100, 100))
+                    do_win = move_soldier(board, "d")
+                    if do_win == False:
+                        screen.blit(lose_text, (200, 200))
                         running = False
+                        break
+                    elif do_win == True:
+                        screen.blit(win_text, (200, 200))
+                        running = False
+                        break
+
+                for i in board:
+                    print(i)
+                print("\n \n \n \n ")
+
 
     pygame.display.flip()
 
-for i in range(1000):
+for i in range(3000):
     pygame.display.flip()
-
