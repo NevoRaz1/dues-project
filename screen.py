@@ -18,8 +18,9 @@ NUMBER_KEYS = {
     pygame.K_KP4: 4, pygame.K_KP5: 5, pygame.K_KP6: 6,
     pygame.K_KP7: 7, pygame.K_KP8: 8, pygame.K_KP9: 9,
 }
-def save_game(current_board, slot_number):
-    print(f"Game saved successfully to slot: {slot_number}")
+game_saves = {}
+def save_game(current_board, slot_number,game_saves):
+    game_saves[slot_number] = current_board
 
 
 
@@ -187,8 +188,9 @@ def run_game():
                     press_duration = time.time() - number_and_time[event.key]  # מחסר את הזמן העכשווי לזמן שהוא נלחץ
                     number_and_time.pop(event.key)
                     slot_number = NUMBER_KEYS[event.key]
-                    if press_duration >= 1.0:
-                        save_game(board, slot_number)
+                    if press_duration <= 1.0:
+                        save_game(board, slot_number,game_saves)
+                        game_saves
 
         pygame.display.flip()
 
