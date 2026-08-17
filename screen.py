@@ -20,6 +20,7 @@ NUMBER_KEYS = {
 }
 game_saves = {}
 def save_game(current_board, slot_number,game_saves):
+
     game_saves[slot_number] = current_board
 
 
@@ -186,7 +187,7 @@ def run_game():
             elif event.type == pygame.KEYUP:  # בודק האם המקש הורם
                 if event.key in number_and_time.keys():
                     press_duration = time.time() - number_and_time[event.key]  # מחסר את הזמן העכשווי לזמן שהוא נלחץ
-                    slot_number = list(number_and_time.keys())[0]
+                    slot_number = list(number_and_time.keys())[0]-48
                     if press_duration <= 1.0:
                         save_game(board, slot_number,game_saves)
                         add_game_to_save(game_saves,slot_number)
