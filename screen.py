@@ -6,6 +6,23 @@ from soldier import where_is_soldier,move_soldier,can_soldier_move
 from consts import WIDTH,HIGHT,BOARD_ROWS,BOARD_COLUMNS,MINE
 import random
 pygame.init()
+# מילון למעקב אחר זמני לחיצה על מקשי ספרות
+number_and_time = {}
+
+# מיפוי מקשי הספרות (כולל Numpad) לערכים המספריים שלהם
+NUMBER_KEYS = {
+    pygame.K_1: 1, pygame.K_2: 2, pygame.K_3: 3,
+    pygame.K_4: 4, pygame.K_5: 5, pygame.K_6: 6,
+    pygame.K_7: 7, pygame.K_8: 8, pygame.K_9: 9,
+    pygame.K_KP1: 1, pygame.K_KP2: 2, pygame.K_KP3: 3,
+    pygame.K_KP4: 4, pygame.K_KP5: 5, pygame.K_KP6: 6,
+    pygame.K_KP7: 7, pygame.K_KP8: 8, pygame.K_KP9: 9,
+}
+def save_game(current_board, slot_number):
+    print(f"Game saved successfully to slot: {slot_number}")
+
+
+
 
 cell_size=WIDTH//BOARD_COLUMNS
 #https://stackoverflow.com/questions/33963361/how-to-make-a-grid-in-pygame
@@ -162,6 +179,17 @@ def run_game():
                     time.sleep(1)  # שניה
                     pygame.event.clear()#כל קליטה של כפתורים במהלך השניה ימחקו כי אסור לו לזוז
                 text_massage=False
+
+                if event.key in NUMBER_KEYS:  # האם הכפתור שנלחץ הוא מספר
+                    number_and_time[event.key] = time.time()  # שמירת המספר והזמן שהוא נלחץ
+            elif event.type == pygame.KEYUP:  # בודק האם המקש הורם
+                if event.key in number_and_time.keys():
+                    press_duration = time.time() - number_and_time[event.key]  # מחסר את הזמן העכשווי לזמן שהוא נלחץ
+                    number_and_time.pop(event.key)
+                    slot_number = NUMBER_KEYS[event.key]
+                    if press_duration >= 1.0:
+                        save_game(board, slot_number)
+
         pygame.display.flip()
 
 
