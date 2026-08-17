@@ -1,3 +1,5 @@
+import time
+
 import pygame
 from soldier import where_is_soldier,move_soldier,can_soldier_move
 from consts import WIDTH,HIGHT,BOARD_ROWS,BOARD_COLUMNS,MINE
@@ -63,7 +65,7 @@ def show_xray(board, screen, soldier_img, soldier_x, soldier_y, mine_img, cell_s
 
     screen.blit(soldier_img, (soldier_x, soldier_y))
     pygame.display.flip()
-    pygame.time.delay(1000)#שניה
+
 
 
 screen.fill((90, 100, 49))
@@ -103,9 +105,7 @@ while running:
                         screen.blit(win_text,(200,200))
                         running=False
                         break
-                for i in board:
-                    print(i)
-                print("\n \n \n \n ")
+
 
 
             elif event.key == pygame.K_UP:
@@ -120,9 +120,7 @@ while running:
                         running = False
                         break
 
-                for i in board:
-                    print(i)
-                print("\n \n \n \n ")
+
 
             elif event.key == pygame.K_LEFT:
                 if can_soldier_move(board, "a") == True:
@@ -136,9 +134,7 @@ while running:
                         running = False
                         break
 
-                for i in board:
-                    print(i)
-                print("\n \n \n \n ")
+
 
 
             elif event.key == pygame.K_RIGHT:
@@ -153,12 +149,12 @@ while running:
                         running = False
                         break
 
-                for i in board:
-                    print(i)
-                print("\n \n \n \n ")
+
 
             elif event.key == pygame.K_RETURN:
                 show_xray(board, screen, soldier_img, soldier_x, soldier_y, mine_img, cell_size)
+                time.sleep(1)  # שניה
+                pygame.event.clear()
     pygame.display.flip()
 
 
