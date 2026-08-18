@@ -1,57 +1,34 @@
 import csv
-import pandas as pd
 from pathlib import Path
 
+
 def load_game(slot):
-    a = Path(f"game_save_{slot - 48}.csv")
+    filename = f"game_save_{slot}.csv"
+    a = Path(filename)
 
-    # Check if the file exists
     if a.exists():
+        save_board = []
+        try:
+            with open(filename, "r") as f:
+                data = csv.reader(f)
+                for row in data:
+                    int_row = [int(cell) for cell in row]
+                    save_board.append(int_row)
 
-        filename = f"game_save_{slot-48}.csv"
+            return save_board
 
-        # opening the file using "with"
-        # statement
-        save_board={}
-        with open(f'game_save_{slot-48}.csv', mode='r') as infile:
-            reader = csv.reader(infile)
-            with open(f'game_save_{slot-48}.csv', mode='w') as outfile:
-                writer = csv.writer(outfile)
-                save_board = {rows[0]: rows[1] for rows in reader}
+        except (ValueError, IndexError):
 
-        board=save_board.get(slot-48)
-        return board
+            return False
     else:
         return False
 
-def add_game_to_save(game_save,slot):
-    # File path
 
+def add_game_to_save(game_save):
+    slot = list(game_save.keys())[0]
+    filename = f"game_save_{slot}.csv"
+    board_to_save = game_save[slot]
 
-    # File path
-    a = Path(f"game_save_{slot-48}.csv")
-
-    # Check if the file exists
-    if a.exists():
-
-        with open(f"game_save_{slot-48}.csv", "w", newline="") as f:
-            w = csv.DictWriter(f, game_save.keys())
-            w.writeheader()
-            w.writerow(game_save)
-
-
-
-    else:
-        df = pd.DataFrame(game_save)
-
-        csv_file_path = f'game_save_{slot-48}.csv'
-
-        df.to_csv(csv_file_path, index=False)
-
-        with open(f"game_save_{slot-48}.csv", "w", newline="") as f:
-            w = csv.DictWriter(f, game_save.keys())
-            w.writeheader()
-            w.writerow(game_save)
-
-
-
+    with open(filename, "w", newline="") as f:
+        w = csv.writer(f)
+        w.writerows(board_to_save)

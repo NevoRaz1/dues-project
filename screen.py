@@ -101,7 +101,7 @@ put_background(grass_list,grass_img,flag_img)
 soldier_x = where_is_soldier(board)[0][1]*cell_size
 soldier_y=(where_is_soldier(board)[0][0]-3)*cell_size
 
-def run_game():
+def run_game(board):
     text_massage=True
     running = True
     while running:
@@ -189,15 +189,17 @@ def run_game():
                     press_duration = time.time() - number_and_time[event.key]  # מחסר את הזמן העכשווי לזמן שהוא נלחץ
                     slot_number = event.key
                     if press_duration <= 1.0:
-                        save_game(board, slot_number)
-                        add_game_to_save(game_saves,slot_number)
+                        save_game(board, slot_number)#יוצר גיימ סייב
+                        add_game_to_save(game_saves)
 
-                    # elif press_duration>1:
-                        # if load_game(slot_number) ==False:
-                        #     print("there is no save in this slot: ")
-                        # else:
-                        #     new_board=load_game(slot_number)
-                        #     board=new_board
+
+                    elif press_duration > 1:
+                        new_board = load_game(slot_number-48)
+                        if new_board == False:
+                            print("There is no valid save in this slot.")
+
+                        else:
+                            board = new_board
 
 
 
