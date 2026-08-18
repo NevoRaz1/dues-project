@@ -192,12 +192,12 @@ def run_game():
                         save_game(board, slot_number)
                         add_game_to_save(game_saves,slot_number)
 
-                    # elif press_duration>1:
-                        # if load_game(slot_number) ==False:
-                        #     print("there is no save in this slot: ")
-                        # else:
-                        #     new_board=load_game(slot_number)
-                        #     board=new_board
+                    elif press_duration>1:
+                        if load_game(slot_number) ==False:
+                             print("there is no save in this slot: ")
+                         else:
+                             new_board=load_game(slot_number)
+                             board=new_board
 
 
 
