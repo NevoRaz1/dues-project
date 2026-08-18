@@ -21,9 +21,7 @@ NUMBER_KEYS = {
 }
 game_saves = {}
 def save_game(current_board, slot_number):
-
-    game_saves[slot_number-48] = current_board
-
+    game_saves[slot_number] = current_board
 
 
 
@@ -184,26 +182,28 @@ def run_game(board):
 
                 if event.key in NUMBER_KEYS:  # האם הכפתור שנלחץ הוא מספר
                     number_and_time[event.key] = time.time()  # שמירת המספר והזמן שהוא נלחץ
+
             elif event.type == pygame.KEYUP:  # בודק האם המקש הורם
                 if event.key in number_and_time.keys():
                     press_duration = time.time() - number_and_time[event.key]  # מחסר את הזמן העכשווי לזמן שהוא נלחץ
-                    slot_number = event.key
-                    if press_duration <= 1.0:
-                        save_game(board, slot_number)#יוצר גיימ סייב
-                        add_game_to_save(game_saves)
 
+                    slot_number = NUMBER_KEYS[event.key]
+
+                    if press_duration <= 1.0:
+                        save_game(board, slot_number)  # יוצר גיימ סייב
+                        add_game_to_save(game_saves)  # מוסיף את המספר עם הלוח לדיקט
 
                     elif press_duration > 1:
-                        new_board = load_game(slot_number-48)
+                        new_board = load_game(slot_number)
                         if new_board == False:
                             print("There is no valid save in this slot.")
-
                         else:
                             board = new_board
 
-
-
                     number_and_time.clear()
+
+
+
 
 
         pygame.display.flip()
