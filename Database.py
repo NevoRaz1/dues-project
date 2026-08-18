@@ -32,5 +32,6 @@ def add_game_to_save(game_save,slot):
             w.writeheader()
             w.writerow(game_save)
 
-
+def load_game(slot):
+    a = Path(f"game_save_{slot-48}.csv")
 
