@@ -1,23 +1,37 @@
-from pathlib import Path
+import csv
 import pandas as pd
+from pathlib import Path
 
 
-def add_game_to_save(game_save, slot):
-    # Step 1 / 2: Calculate slot number and file path
-    slot_num = slot - 48 if slot >= 48 else slot
-    csv_file_path = Path(f"game_save_{slot_num}.csv")
+def add_game_to_save(game_save,slot):
+    # File path
 
-    # Step 3: Check if file exists; if exists delete old file, otherwise prepare to create new
-    if csv_file_path.is_file():
-        print(f"File '{csv_file_path}' exists. Overwriting...")
-        csv_file_path.unlink()
+    dict={slot-48:game_save}
+
+    # File path
+    a = Path(f"game_save_{slot-48}.csv")
+
+    # Check if the file exists
+    if a.exists():
+
+        with open(f"game_save_{slot-48}.csv", "w", newline="") as f:
+            w = csv.DictWriter(f, dict.keys())
+            w.writeheader()
+            w.writerow(dict)
+
+
+
     else:
-        print(f"File '{csv_file_path}' does not exist. Creating a new file...")
+        df = pd.DataFrame(dict)
 
-    # Step 4: Create a DataFrame using DataFrame function
-    df = pd.DataFrame(game_save)
+        csv_file_path = f'game_save_{slot-48}.csv'
 
-    # Step 5: Write the DataFrame to the CSV file
-    df.to_csv(csv_file_path, index=False, header=False)
+        df.to_csv(csv_file_path, index=False)
 
-    print(f'CSV file "{csv_file_path}" has been saved successfully.')
+        with open(f"game_save_{slot-48}.csv", "w", newline="") as f:
+            w = csv.DictWriter(f, dict.keys())
+            w.writeheader()
+            w.writerow(dict)
+
+
+
