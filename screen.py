@@ -1,10 +1,10 @@
 import time
-
+import guard
 from board import create_board
 board=create_board()
 import pygame
 from soldier import where_is_soldier,move_soldier,can_soldier_move
-from consts import WIDTH,HIGHT,BOARD_ROWS,BOARD_COLUMNS,MINE
+from consts import WIDTH, HIGHT, BOARD_ROWS, BOARD_COLUMNS, MINE, GUARD_ROW
 import random
 pygame.init()
 # מילון למעקב אחר זמני לחיצה על מקשי ספרות
@@ -40,6 +40,10 @@ soldier_img = pygame.transform.scale(soldier_img, (2*cell_size,4*cell_size))
 mine_img = pygame.image.load("mine.png").convert_alpha()
 mine_img = pygame.transform.scale(mine_img, (cell_size*3, cell_size))
 
+guard_img=pygame.image.load("guard.png").convert_alpha()
+guard_img=pygame.transform.scale(guard_img,(cell_size,cell_size))
+
+
 
 grass_img = pygame.image.load("grass.png").convert_alpha()
 grass_img = pygame.transform.scale(grass_img, (cell_size, cell_size))
@@ -54,6 +58,13 @@ font = pygame.font.Font(None, 24)
 lose_font = pygame.font.Font(None, 200)
 lose_text = lose_font.render("You Lose!",True,(255,255,255))
 win_text = lose_font.render("You Win!",True,(255,255,255))
+
+from guard import move_guard_left,move_guard_right,where_guard_col
+
+
+
+
+
 
 def put_background(grass_list,grass_img,flag_img):
 
@@ -102,12 +113,19 @@ soldier_y=(where_is_soldier(board)[0][0]-3)*cell_size
 def run_game(board):
     text_massage=True
     running = True
+    count=0
     while running:
-
+        if count >99:
+            count=0
         soldier_x = where_is_soldier(board)[0][1] * cell_size
         soldier_y = (where_is_soldier(board)[0][0] - 3) * cell_size
 
         put_background(grass_list, grass_img, flag_img)
+
+
+        guard_col = where_guard_col(board)
+        screen.blit(guard_img, (guard_col * cell_size, GUARD_ROW * cell_size))
+
         screen.blit(soldier_img,(soldier_x,soldier_y))
         if text_massage == True:
             screen.blit(text, (70, 10))
@@ -128,6 +146,18 @@ def run_game(board):
                             screen.blit(win_text,(200,200))
                             running=False
                             break
+                    if count < 50:
+                        if move_guard_right(board):
+                            screen.blit(lose_text, (200, 200))
+                            running = False
+                            break
+                    elif count >= 50:
+                        if move_guard_left(board):
+                            screen.blit(lose_text, (200, 200))
+                            running = False
+                            break
+                    count += 1
+
 
 
 
@@ -142,6 +172,18 @@ def run_game(board):
                             screen.blit(win_text, (200,200))
                             running = False
                             break
+                    if count < 50:
+                        if move_guard_right(board):
+                            screen.blit(lose_text, (200, 200))
+                            running = False
+                            break
+                    elif count >= 50:
+                        if move_guard_left(board):
+                            screen.blit(lose_text, (200, 200))
+                            running = False
+                            break
+                    count += 1
+
 
 
 
@@ -156,6 +198,18 @@ def run_game(board):
                             screen.blit(win_text, (200, 200))
                             running = False
                             break
+                    if count < 50:
+                        if move_guard_right(board):
+                            screen.blit(lose_text, (200, 200))
+                            running = False
+                            break
+                    elif count >= 50:
+                        if move_guard_left(board):
+                            screen.blit(lose_text, (200, 200))
+                            running = False
+                            break
+                    count += 1
+
 
 
 
@@ -171,6 +225,18 @@ def run_game(board):
                             screen.blit(win_text, (200, 200))
                             running = False
                             break
+                    if count < 50:
+                        if move_guard_right(board):
+                            screen.blit(lose_text, (200, 200))
+                            running = False
+                            break
+                    elif count >= 50:
+                        if move_guard_left(board):
+                            screen.blit(lose_text, (200, 200))
+                            running = False
+                            break
+                    count += 1
+
 
 
 

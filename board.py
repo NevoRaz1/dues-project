@@ -1,20 +1,26 @@
 import random
-from consts import BOARD_ROWS,BOARD_COLUMNS,GROUND,MINE,FLAG,SOLDIER
+from consts import BOARD_ROWS, BOARD_COLUMNS, GROUND, MINE, FLAG, SOLDIER, GUARD_ROW,GUARD
+
+
 def create_board():
     board=[]
     for row in range(BOARD_ROWS):
         board.append([])
         for column in range(BOARD_COLUMNS):
             board[row].append(GROUND)
+    add_guard(board)
     add_soldier(board)
     put_flag(board)
     put_mines_in_board(board)
     while not is_board_ok(board):
         board = create_board()
+        add_guard(board)
         add_soldier(board)
         put_flag(board)
         put_mines_in_board(board)
     return board
+def add_guard(board):
+    board[GUARD_ROW][0]=GUARD
 def add_soldier(board):
     board[3][1],board[3][0]=SOLDIER,SOLDIER
 def put_flag(board):
@@ -30,7 +36,7 @@ def put_mines_in_board(board):
     mines=[]
     row = random.randint(0, BOARD_ROWS - 1)  # roll random number between 0-len-3 because the mine length is 3
     col = random.randint(0, BOARD_COLUMNS - 3)
-    while board[row][col] == SOLDIER or board[row][col+1] == SOLDIER or board[row][col+2] == SOLDIER or  board[row][col] == FLAG or board[row][col + 1] == FLAG or board[row][col + 2] == FLAG:
+    while board[row][col] == SOLDIER or board[row][col] == GUARD or board[row][col+1] == SOLDIER or board[row][col+2] == SOLDIER or  board[row][col] == FLAG or board[row][col + 1] == FLAG or board[row][col + 2] == FLAG:
         row = random.randint(0, BOARD_ROWS - 3)
         col = random.randint(0, BOARD_COLUMNS - 3)
     mine = [(row, col), (row, col + 1), (row, col + 2)]
@@ -39,7 +45,7 @@ def put_mines_in_board(board):
         row=random.randint(0,BOARD_ROWS-1)#roll random number between 0-len-3 because the mine length is 3
         col=random.randint(0,BOARD_COLUMNS-3)
         #checks edge cases
-        while  is_mine_exist(mines,row,col) or board[row][col] == SOLDIER or board[row][col+1] == SOLDIER or board[row][col+2] == SOLDIER  or board[row][col]==FLAG or board[row][col+1]==FLAG or board[row][col+2]==FLAG :
+        while  is_mine_exist(mines,row,col) or board[row][col]==GUARD or board[row][col] == SOLDIER or board[row][col+1] == SOLDIER or board[row][col+2] == SOLDIER  or board[row][col]==FLAG or board[row][col+1]==FLAG or board[row][col+2]==FLAG :
             row = random.randint(0, BOARD_ROWS - 3)
             col = random.randint(0, BOARD_COLUMNS - 3)
         mine=[(row,col),(row,col+1),(row,col+2)]
