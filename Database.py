@@ -18,17 +18,16 @@ def load_game(slot):
             return save_board
 
         except (ValueError, IndexError):
-
             return False
     else:
         return False
 
 
 def add_game_to_save(game_save):
-    slot = list(game_save.keys())[0]
-    filename = f"game_save_{slot}.csv"
-    board_to_save = game_save[slot]
+    # עובר על כל סלוט והלוח שלו ושומר לקובץ נפרד
+    for slot, board_to_save in game_save.items():
+        filename = f"game_save_{slot}.csv"
 
-    with open(filename, "w", newline="") as f:
-        w = csv.writer(f)
-        w.writerows(board_to_save)
+        with open(filename, "w", newline="") as f:
+            w = csv.writer(f)
+            w.writerows(board_to_save)
