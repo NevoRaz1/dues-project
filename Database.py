@@ -1,37 +1,34 @@
 import csv
-import pandas as pd
 from pathlib import Path
+import pandas as pd
 
 
-def add_game_to_save(game_save,slot):
-    # File path
-
-    dict={slot-48:game_save}
-
-    # File path
-    a = Path(f"game_save_{slot-48}.csv")
-
-    # Check if the file exists
-    if a.exists():
-
-        with open(f"game_save_{slot-48}.csv", "w", newline="") as f:
-            w = csv.DictWriter(f, dict.keys())
-            w.writeheader()
-            w.writerow(dict)
-
-
-
+def add_game_to_save(game_save, slot):
+    # המרה: אם קיבלנו קוד מקש מ-pygame (49-57), נחסר 48 ונקבל 1-9
+    if slot >= 48:
+        slot_num = slot - 48
     else:
-        df = pd.DataFrame(dict)
+        slot_num = slot
 
-        csv_file_path = f'game_save_{slot-48}.csv'
+    # קריטי: המפתח במילון חייב להיות slot_num ולא slot!
+    save_dict = {slot_num: game_save}
 
-        df.to_csv(csv_file_path, index=False)
+    file_path = Path(f"game_save_{slot_num}.csv")
 
-        with open(f"game_save_{slot-48}.csv", "w", newline="") as f:
-            w = csv.DictWriter(f, dict.keys())
+    # בדיקה האם הקובץ קיים
+    if file_path.exists():
+        with open(file_path, "w", newline="") as f:
+            w = csv.DictWriter(f, fieldnames=save_dict.keys())
             w.writeheader()
-            w.writerow(dict)
+            w.writerow(save_dict)
+    else:
+        df = pd.DataFrame(save_dict)
+        df.to_csv(file_path, index=False)
 
+        with open(file_path, "w", newline="") as f:
+            w = csv.DictWriter(f, fieldnames=save_dict.keys())
+            w.writeheader()
+            w.writerow(save_dict)
 
-
+    # הדפסה לבדיקה שמוודאת שהמפתח הוא 1
+    print(save_dict)
