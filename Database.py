@@ -12,11 +12,15 @@ def load_game(slot):
 
         # opening the file using "with"
         # statement
-        save_board=[]
-        with open(filename, 'r') as data:
-            for line in csv.DictReader(data):
-                save_board.append(line)
-        return save_board
+        save_board={}
+        with open(f'game_save_{slot-48}.csv', mode='r') as infile:
+            reader = csv.reader(infile)
+            with open(f'game_save_{slot-48}.csv', mode='w') as outfile:
+                writer = csv.writer(outfile)
+                save_board = {rows[0]: rows[1] for rows in reader}
+
+        board=save_board.get(slot-48)
+        return board
     else:
         return False
 
