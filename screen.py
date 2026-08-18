@@ -1,6 +1,7 @@
 import time
 
-
+from board import create_board
+board=create_board()
 import pygame
 from soldier import where_is_soldier,move_soldier,can_soldier_move
 from consts import WIDTH,HIGHT,BOARD_ROWS,BOARD_COLUMNS,MINE
@@ -8,7 +9,7 @@ import random
 pygame.init()
 # מילון למעקב אחר זמני לחיצה על מקשי ספרות
 number_and_time = {}
-from Database import add_game_to_save
+from Database import add_game_to_save,load_game
 # מיפוי מקשי הספרות (כולל Numpad) לערכים המספריים שלהם
 NUMBER_KEYS = {
     pygame.K_1: 1, pygame.K_2: 2, pygame.K_3: 3,
@@ -21,7 +22,7 @@ NUMBER_KEYS = {
 game_saves = {}
 def save_game(current_board, slot_number):
 
-    game_saves[slot_number] = current_board
+    game_saves[slot_number-48] = current_board
 
 
 
@@ -31,8 +32,7 @@ cell_size=WIDTH//BOARD_COLUMNS
 
 screen = pygame.display.set_mode((WIDTH,HIGHT))
 
-from board import create_board
-board = create_board()
+
 
 #soldier image
 soldier_img = pygame.image.load("soldier.png").convert_alpha()
@@ -191,6 +191,16 @@ def run_game():
                     if press_duration <= 1.0:
                         save_game(board, slot_number)
                         add_game_to_save(game_saves,slot_number)
+
+                    # elif press_duration>1:
+                        # if load_game(slot_number) ==False:
+                        #     print("there is no save in this slot: ")
+                        # else:
+                        #     new_board=load_game(slot_number)
+                        #     board=new_board
+
+
+
                     number_and_time.clear()
 
 
