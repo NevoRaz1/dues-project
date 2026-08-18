@@ -1,19 +1,31 @@
 import csv
 import pandas as pd
-import json
 from pathlib import Path
+
 
 def add_game_to_save(game_save,slot):
     # File path
 
 
-    # Step 3 Create a DataFrame using DataFrame function
-    df = pd.DataFrame(game_save)
+    # File path
+    a = Path(f"game_save_{slot-48}.csv")
 
-    # Step 4 Specify the file path to save data
-    csv_file_path = f'game_save_{slot-48}.csv'
+    # Check if the file exists
+    if a.exists():
 
-    # Step 5 Write the DataFrame to a CSV file using to_csv() function where file path is passed
-    df.to_csv(csv_file_path, index=False)
+        with open(f'game_save_{slot-48}.csv', 'w', newline='') as csvfile:
+            writer = csv.DictWriter(csvfile, fieldnames=game_save)
+            writer.writeheader()
+            writer.writerows(game_save)
 
-    print(f'CSV file &quot;{csv_file_path}&quot; has been created successfully.')
+
+
+    else:
+        df = pd.DataFrame(game_save)
+
+        csv_file_path = f'game_save_{slot-48}.csv'
+
+        df.to_csv(csv_file_path, index=False)
+
+
+
